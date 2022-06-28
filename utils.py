@@ -1,0 +1,5 @@
+
+MANAGER = 1
+STAFF = 0
+EMPLOYEE_HEADER = "employees"
+
