@@ -1,35 +1,13 @@
-from flask import jsonify, make_response, request
-from app import app
-from services import *
-from utils import *
-from auth import *
-import sys
+# from auth import *
+# from flask import jsonify, make_response, request, Blueprint
+# from services import *
+# from utils import *
 
-# All User
-@app.route('/api/login', methods =['POST'])
-def login():
-    # creates dictionary of form data
-    auth = request.form
-  
-    if not auth or not auth.get(USERNAME) or not auth.get(PASSWORD):
-        # returns 401 if any username or / and password is missing
-        return make_response({MESSAGE : USERNAME_PASSWORD_EMPTY}, UNAUTHORIZED)
-  
-    employee = EmployeeService().getEmployeeByUsername(auth.get(USERNAME))
 
-    if not employee:
-        # returns invalid username password
-        return make_response({MESSAGE : INVALID_CREDENTIALS_MSG}, UNAUTHORIZED)
-    
-    if authenticate(employee.password, auth.get(PASSWORD)): 
-        return make_response({ACCESS_TOKEN : generateToken(employee, app.config['SECRET_KEY'], algorithm='HS256')}, OK)
-
-    # Default
-    return make_response({MESSAGE : INVALID_CREDENTIALS_MSG}, UNAUTHORIZED)
-
+# api_manager_bp = Blueprint('api_manager_bp', __name__)
 
 # # Manager only (Find all Employees)
-# @app.route("/api/manager/employees")
+# @api_manager_bp.route("/api/manager/employees")
 # @token_required
 # @manager_required
 # def findAllEmployees():
@@ -38,7 +16,7 @@ def login():
 
 
 # # Manager Only (Create Department)
-# @app.route('/api/manager/addDepartment', methods =['PUT'])
+# @api_manager_bp.route('/api/manager/addDepartment', methods =['PUT'])
 # @token_required
 # @manager_required
 # def addDepartment():
@@ -63,7 +41,7 @@ def login():
 
 
 # # Manager Only (Update Department)
-# @app.route('/api/manager/updateDepartmentName/<code>', methods=['PUT'])
+# @api_manager_bp.route('/api/manager/updateDepartmentName/<code>', methods=['PUT'])
 # @token_required
 # @manager_required
 # def updateDepartment(code):
@@ -93,7 +71,7 @@ def login():
 
 
 # # Manager Only (Find employees from particular department)
-# @app.route('/api/manager/findAllEmployeesFromDepartment/<code>', methods=['GET'])
+# @api_manager_bp.route('/api/manager/findAllEmployeesFromDepartment/<code>', methods=['GET'])
 # @token_required
 # @manager_required
 # def findAllEmployeesFromDepartment(code):
@@ -111,7 +89,7 @@ def login():
 
 
 # # Manager Only (Insert employee salary info)
-# @app.route('/api/manager/addEmployeeSalaryAndBonus', methods=['PUT'])
+# @api_manager_bp.route('/api/manager/addEmployeeSalaryAndBonus', methods=['PUT'])
 # @token_required
 # @manager_required
 # def addEmployeeSalaryAndBonus():
@@ -139,7 +117,7 @@ def login():
 
 
 # # signup route
-# @app.route('/api/manager/createEmployeeAccount', methods =['POST'])
+# @api_manager_bp.route('/api/manager/createEmployeeAccount', methods =['POST'])
 # @token_required
 # @manager_required
 # def createEmployeeAccount():

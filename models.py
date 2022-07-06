@@ -27,4 +27,16 @@ class Department(db.Model):
     code = db.Column(db.Integer, unique=True, nullable=False)
     name = db.Column(db.String(20), unique=True, nullable=False)   
 
-#db.create_all()
+@dataclass
+class Salary(db.Model):
+    id: int
+    employee_username: str
+    monthly_salary: int
+    yearly_bonus: int
+
+    id = db.Column(db.Integer, primary_key=True)
+    employee_username = db.Column(db.String(20), unique=True, nullable=False) 
+    monthly_salary = db.Column(db.Integer, nullable=False, default=0)
+    yearly_bonus = db.Column(db.Integer, nullable=False, default=0)
+
+db.create_all()
