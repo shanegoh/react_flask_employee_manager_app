@@ -9,7 +9,6 @@ def get_jwt_claims():
     token = request.headers['Authorization'][7:]
     return jwtDecode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
 
-
 # decorator for verifying the JWT
 def token_required(f):
     @wraps(f)

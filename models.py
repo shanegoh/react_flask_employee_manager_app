@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from db import *
+from database import db
 
 @dataclass
 class Employee(db.Model):
