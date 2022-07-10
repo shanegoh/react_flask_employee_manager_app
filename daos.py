@@ -24,11 +24,11 @@ class EmployeeDAO:
         db.session.commit()
     
     def findAllEmployeesFromDepartment(self, code):
-        return Employee.query\
+        return [row._asdict() for row in Employee.query\
             .join(Department, Employee.department == Department.code)\
             .with_entities(Employee.username, Employee.role, Department.name)\
             .filter(Employee.department == code)\
-            .all()
+            .all()]
 
 
 class DepartmentDAO:

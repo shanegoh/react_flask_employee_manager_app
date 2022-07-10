@@ -1,5 +1,5 @@
-from flask import jsonify, request
-from app import app, bcrypt
+from flask import jsonify, request, current_app as app
+from flask_bcrypt import check_password_hash, generate_password_hash
 from functools import wraps
 from services import *
 from jwtUtil import *
@@ -49,7 +49,7 @@ def manager_required(f):
 
 
 def authenticate(pwd_hash, password):
-    return bcrypt.check_password_hash(pwd_hash, password) # returns True
+    return check_password_hash(pwd_hash, password) # returns True
         
 def generatePWDHash(password):
-    return bcrypt.generate_password_hash(password) # return bcrypt hash
+    return generate_password_hash(password) # return bcrypt hash

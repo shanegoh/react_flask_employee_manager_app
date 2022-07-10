@@ -39,4 +39,4 @@ class Salary(db.Model):
     monthly_salary = db.Column(db.Integer, nullable=False, default=0)
     yearly_bonus = db.Column(db.Integer, nullable=False, default=0)
 
-db.create_all()
+#db.create_all()
