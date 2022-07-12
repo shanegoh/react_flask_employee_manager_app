@@ -42,6 +42,7 @@ SALARY_BONUS_ADD_SUCCESS = "Successfully created employee salary and bonus infor
 SALARY_BONUS_ADD_FAIL = 'Failed to create employee salary and bonus information. Please contact administrator'
 SALARY_BONUS_EXIST = 'Failed to create employee salary and bonus information. Employee Record Exist'
 MISSING_FIELDS = 'Please ensure that all fields are filled'
+RECORD_NOT_FOUND = 'No Record Exist'
 # Status Code
 OK = 200
 CREATED = 201

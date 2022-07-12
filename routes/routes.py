@@ -22,6 +22,7 @@ def login():
         return make_response({MESSAGE : INVALID_CREDENTIALS_MSG}, UNAUTHORIZED)
     
     if authenticate(employee.password, auth.get(PASSWORD)): 
+        app.logger.info('login: [Login]')
         return make_response({ACCESS_TOKEN : generateToken(employee, app.config['SECRET_KEY'], algorithm='HS256')}, OK)
 
     # Default

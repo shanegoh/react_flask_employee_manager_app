@@ -16,6 +16,9 @@ class EmployeeService:
 
     def getAllEmployeesFromDepartment(self, code):
         return employee_dao.findAllEmployeesFromDepartment(code)
+
+    def getEmployeeInfoByUsername(self, username):
+        return employee_dao.findEmployeeInfoByUsername(username)
       
 class DepartmentService:
     def getDepartmentByCodeAndORName(self, code, name):
@@ -37,3 +40,6 @@ class SalaryService:
 
     def getSalaryInformationByEmployeeUsername(self, username):
         return salary_dao.findSalaryInformationByEmployeeUsername(username)
+
+    def getEmployeePayout(self, id):
+        return salary_dao.find

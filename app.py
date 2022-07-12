@@ -1,4 +1,5 @@
 from flask import Flask
+import logging
 
 def create_app():
     """Create Flask application."""
@@ -11,7 +12,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/test_production'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
-
+    logging.basicConfig(level=logging.INFO)
     with app.app_context():
         # Import parts of our application
         from routes.routes import routes_bp
@@ -19,6 +20,8 @@ def create_app():
         from routes.staff_routes import staff_routes_bp
         # Register Blueprints
         app.register_blueprint(manager_routes_bp, url_prefix='/api/manager')
+        app.register_blueprint(staff_routes_bp, url_prefix='/api/staff')
         app.register_blueprint(routes_bp, url_prefix='/api')
         return app
+
 

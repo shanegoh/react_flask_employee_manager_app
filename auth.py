@@ -5,11 +5,7 @@ from services import *
 from jwtUtil import *
 from utils import *
 
-def get_jwt_claims():
-    token = request.headers['Authorization'][7:]
-    return jwtDecode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
-
-# decorator for verifying the JWT
+# return claims for manager_required and staff_required decorator
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -22,7 +18,7 @@ def token_required(f):
 
         try:
             # try decode
-            jwtDecode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            claims = jwtDecode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
             
         except jwt.ExpiredSignatureError:
             return jsonify({MESSAGE : TOKEN_EXPIRED}), UNAUTHORIZED
@@ -30,18 +26,29 @@ def token_required(f):
             return jsonify({MESSAGE : TOKEN_CLAIMS_ERROR}), UNAUTHORIZED
         except:
             return jsonify({MESSAGE : INVALID_ACCESS_TOKEN}), UNAUTHORIZED
-        return f(*args, **kwargs)
+        return f(claims, *args, **kwargs)
   
     return decorated
 
 
-# decorator for verifying role
+# returns id from claims
 def manager_required(f):
     @wraps(f)
-    def decorated(*args, **kwargs):
-        claims = get_jwt_claims()
+    def decorated(claims, *args, **kwargs):
         if claims[ROLE] == MANAGER:
-            return f(*args, **kwargs)
+            return f(claims[USERNAME], *args, **kwargs)
+        else:
+            return jsonify({MESSAGE : NO_PERMISSION}), UNAUTHORIZED
+
+    return decorated
+
+
+# returns id from claims
+def staff_required(f):
+    @wraps(f)
+    def decorated(claims, *args, **kwargs):
+        if claims[ROLE] == STAFF:
+            return f(claims[USERNAME], *args, **kwargs)
         else:
             return jsonify({MESSAGE : NO_PERMISSION}), UNAUTHORIZED
 

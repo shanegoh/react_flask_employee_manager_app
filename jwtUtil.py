@@ -7,7 +7,7 @@ def jwtDecode(token, secret, algorithms):
 def generateToken(employee, secret, algorithm):
     # generates the JWT Token
     return jwt.encode({
-        'id': employee.id,
+        'username': employee.username,
         'role': employee.role,
         'iat' : datetime.utcnow(),
         'exp' : datetime.utcnow() + timedelta(minutes = 30)

@@ -30,6 +30,17 @@ class EmployeeDAO:
             .filter(Employee.department == code)\
             .all()]
 
+    #  def reading_list(df:pd.DataFrame)->list:
+    #     return list(map(lambda x:Reading(h=x[0],p=x[1]),df.values.tolist()))
+
+    def findEmployeeInfoByUsername(self, username):
+        employee = Employee.query\
+                .join(Department, Employee.department == Department.code)\
+                .with_entities(Employee.id, Employee.username, Employee.role, Department.name, Department.code)\
+                .filter((Employee.username == username))\
+                .first()
+        return EmployeeInfo(employee[0], employee[1], employee[2], employee[3])
+
 
 class DepartmentDAO:
     def __init__(self, model):

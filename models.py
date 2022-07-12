@@ -40,3 +40,10 @@ class Salary(db.Model):
     yearly_bonus = db.Column(db.Integer, nullable=False, default=0)
 
 #db.create_all()
+
+class EmployeeInfo:
+    def __init__(self, id, username, role, department):
+        self.id = id
+        self.username = username
+        self.role = role
+        self.department = department
