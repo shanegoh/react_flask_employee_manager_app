@@ -43,6 +43,9 @@ SALARY_BONUS_ADD_FAIL = 'Failed to create employee salary and bonus information.
 SALARY_BONUS_EXIST = 'Failed to create employee salary and bonus information. Employee Record Exist'
 MISSING_FIELDS = 'Please ensure that all fields are filled'
 RECORD_NOT_FOUND = 'No Record Exist'
+IMAGE_NOT_FOUND = 'Image not present'
+IMAGE_SUCCESSFULLY_UPLOADED = 'Image successfully uploaded.'
+UPLOAD_FAILED = 'Failed to upload image. Please contact the administrator.'
 # Status Code
 OK = 200
 CREATED = 201

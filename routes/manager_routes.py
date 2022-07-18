@@ -10,7 +10,7 @@ manager_routes_bp = Blueprint('manager_routes_bp', __name__)
 @manager_routes_bp.route("/employees")
 @token_required
 @manager_required
-def findAllEmployees():
+def findAllEmployees(username):
     employees = EmployeeService().getAllUsers()
     return make_response(jsonify({ EMPLOYEE_HEADER : employees}), OK)
 
@@ -19,7 +19,7 @@ def findAllEmployees():
 @manager_routes_bp.route('/addDepartment', methods =['PUT'])
 @token_required
 @manager_required
-def addDepartment():
+def addDepartment(username):
     formData = request.form
   
     if not formData or not formData.get(CODE) or not formData.get(NAME):
@@ -44,7 +44,7 @@ def addDepartment():
 @manager_routes_bp.route('/updateDepartmentName/<code>', methods=['PUT'])
 @token_required
 @manager_required
-def updateDepartment(code):
+def updateDepartment(username, code):
     formData = request.form
   
     if not formData or not formData.get(NAME):
@@ -74,7 +74,7 @@ def updateDepartment(code):
 @manager_routes_bp.route('/findAllEmployeesFromDepartment/<code>', methods=['GET'])
 @token_required
 @manager_required
-def findAllEmployeesFromDepartment(code):
+def findAllEmployeesFromDepartment(username, code):
     try:
         employeeList = EmployeeService().getAllEmployeesFromDepartment(code)
         print(employeeList)
@@ -92,7 +92,7 @@ def findAllEmployeesFromDepartment(code):
 @manager_routes_bp.route('/addEmployeeSalaryAndBonus', methods=['PUT'])
 @token_required
 @manager_required
-def addEmployeeSalaryAndBonus():
+def addEmployeeSalaryAndBonus(username):
     try:
         formData = request.form
         # Check for empty fields
@@ -120,7 +120,7 @@ def addEmployeeSalaryAndBonus():
 @manager_routes_bp.route('/createEmployeeAccount', methods =['POST'])
 @token_required
 @manager_required
-def createEmployeeAccount():
+def createEmployeeAccount(username):
     formData = request.form
     username = formData.get(USERNAME)
     password = formData.get(PASSWORD)

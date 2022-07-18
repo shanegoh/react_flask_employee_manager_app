@@ -18,16 +18,16 @@ class EmployeeDAO:
             username = username,
             password = password,
             role = role,
-            department = department
+            dept_code = department
         )
         db.session.add(employee)
         db.session.commit()
     
     def findAllEmployeesFromDepartment(self, code):
         return [row._asdict() for row in Employee.query\
-            .join(Department, Employee.department == Department.code)\
-            .with_entities(Employee.username, Employee.role, Department.name)\
-            .filter(Employee.department == code)\
+            .join(Department, Employee.dept_code == Department.dept_code)\
+            .with_entities(Employee.username, Employee.role, Department.dept_code)\
+            .filter(Employee.dept_code == code)\
             .all()]
 
     #  def reading_list(df:pd.DataFrame)->list:
@@ -35,8 +35,8 @@ class EmployeeDAO:
 
     def findEmployeeInfoByUsername(self, username):
         employee = Employee.query\
-                .join(Department, Employee.department == Department.code)\
-                .with_entities(Employee.id, Employee.username, Employee.role, Department.name, Department.code)\
+                .join(Department, Employee.dept_code == Department.dept_code)\
+                .with_entities(Employee.id, Employee.username, Employee.role, Department.name, Department.dept_code)\
                 .filter((Employee.username == username))\
                 .first()
         return EmployeeInfo(employee[0], employee[1], employee[2], employee[3])
@@ -48,19 +48,19 @@ class DepartmentDAO:
     
     def findDepartmentByCodeAndORName(self, code, name):
         return Department.query\
-                .filter((Department.code == code) | (Department.name == name))\
+                .filter((Department.dept_code == code) | (Department.name == name))\
                 .first()
     
     def findDepartmentByCode(self, code):
         return Department.query\
-                .filter(Department.code == code)\
+                .filter(Department.dept_code == code)\
                 .first()
     
     def addNewDepartment(self, code, name):
         print(code)
         print(name)
         newDept = Department(
-            code = code,
+            dept_code = code,
             name = name
         )
         db.session.add(newDept)
@@ -77,19 +77,40 @@ class SalaryDAO:
 
     def addEmployeeSalaryAndBonus(self, username, salary, bonus):
         salaryRecord = Salary(
-            employee_username = username,
-            monthly_salary = salary,
-            yearly_bonus = bonus
+            username = username,
+            salary = salary,
+            bonus = bonus
         )
         db.session.add(salaryRecord)
         db.session.commit()
 
     def findSalaryInformationByEmployeeUsername(self, username):
         return Salary.query\
-                .filter_by(employee_username = username)\
+                .filter(Salary.username == username)\
                 .first()
     
+class ImageDAO:
+    def __init__(self, model):
+        self.model = model
+
+    def saveProfileImage(self, username, filePath):
+        file = Image(
+            username = username,
+            path = filePath
+        )
+        db.session.add(file)
+        db.session.commit()
+
+    def findImageRecordByUsername(self, username):
+        return Image.query.filter(Image.username == username).first()
+
+    def updateProfileImage(self, record, filePath):
+        record.path = filePath
+        db.session.commit()
+
+
 # Declare dao object for services.py to use
 employee_dao = EmployeeDAO(Employee)
 department_dao = DepartmentDAO(Department)
 salary_dao = SalaryDAO(Salary)
+image_dao = ImageDAO(Image)
